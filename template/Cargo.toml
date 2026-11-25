@@ -1,0 +1,27 @@
+[package]
+name = "sadar-badge"
+version = "0.1.0"
+edition = "2024"
+
+# Versions verified 25 Nov 2026 against the OFFICIAL wasm-template
+# (github.com/tari-project/wasm-template, wasm_templates/empty/Cargo.toml):
+# tari_template_lib 0.42, tari_template_test_tooling 0.55. The old pins
+# (0.40/0.49, copied from November entries) were stale — 0.40.1 failed to
+# compile (unresolved import `_panic_handler` in its panic_hook.rs).
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+tari_template_lib = { version = "0.42" }
+
+[dev-dependencies]
+tari_template_test_tooling = "0.55"
+
+[profile.release]
+opt-level = "s"
+lto = true
+codegen-units = 1
+panic = "abort"
+strip = true
+# Size-tuned profile per the Ootle docs: publish cost scales with WASM size
+# (~72 KiB ~ 0.61 TARI; ~1 MiB ~ 89 TARI).
